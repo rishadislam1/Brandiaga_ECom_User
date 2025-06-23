@@ -11,7 +11,7 @@ import Products from "@/pages/Products";
 import ProductDetail from "@/pages/ProductDetail";
 import Cart from "@/pages/Cart";
 import SignIn from "@/pages/SignIn";
-import Admin from "@/pages/Admin";
+import Admin from "@/pages/Admin.tsx";
 import NotFound from "./pages/NotFound";
 import LoadingSpinner from "./components/ui/loading-spinner";
 import { ProductQuickViewModal } from "./hooks/use-product-quick-view";
@@ -26,6 +26,7 @@ import TrackOrder from "./pages/TrackOrder";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import SellerPolicy from "./pages/SellerPolicy";
+import CustomerAccount from "./pages/CustomerAccount";
 
 // Create auth context
 export const AuthContext = createContext({
@@ -42,6 +43,7 @@ function App() {
   useEffect(() => {
     // Check if user is authenticated from localStorage
     const authStatus = localStorage.getItem('isAuthenticated') === 'true';
+    console.log("auth",authStatus)
     setIsAuthenticated(authStatus);
     
     // Simulate application loading
@@ -58,8 +60,8 @@ function App() {
     return children;
   };
   const PublicRoute = ({ children }) => {
-
-    if (isAuthenticated) {
+const authStatus = localStorage.getItem('isAuthenticated') === 'true';
+    if (authStatus) {
       return <Navigate to="/" replace />; // Redirect to home or dashboard
     }
     return children;
@@ -83,9 +85,10 @@ function App() {
                 <Route path="products" element={<Products />} />
                 <Route path="products/:productId" element={<ProductDetail />} />
                 <Route path="cart" element={<Cart />} />
-                <Route path="admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+                <Route path="admin" element={<Admin />} />
                 <Route path="orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
                 <Route path="checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+                <Route path="account" element={<ProtectedRoute><CustomerAccount /></ProtectedRoute>} />
                 <Route path="contact-us" element={<ContactUs />} />
                 <Route path="faq" element={<FAQ />} />
                 <Route path="track-order" element={<ProtectedRoute><TrackOrder /></ProtectedRoute>} />

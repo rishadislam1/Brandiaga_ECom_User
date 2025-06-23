@@ -66,3 +66,19 @@ export const DeleteProductsRequest = async (id)=>{
         store.dispatch(setLoading(false));
     }
 }
+
+export const GetProductById = async (id)=>{
+    const axiosSecure = UseAxiosSecure();
+    try {
+        store.dispatch(setLoading(true));
+
+        const res = await axiosSecure.get(`/Products/${id}`);
+
+        return res.data;
+    } catch (error) {
+
+        showError(error?.response?.data?.message || error?.response?.data?.Message);
+    } finally {
+        store.dispatch(setLoading(false));
+    }
+}
